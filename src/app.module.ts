@@ -7,9 +7,14 @@ import { SeedModule } from './seed/seed.module';
 import { MailModule } from './common/mail/mail.module';
 import { PatientsModule } from './patients/patients.module';
 import { CommonModule } from './common/common.module';
+import { EnumEnvironmentKeys, EnvConfiguration } from './config/env.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [EnvConfiguration]
+    }),
     ConsultationsModule,
     SeedModule,
     PatientsModule,
@@ -18,7 +23,8 @@ import { CommonModule } from './common/common.module';
     MailModule,
     MongooseModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({
-        uri: config.get('DB_MONGOOSE_URI'),
+        uri: config.getOrThrow(EnumEnvironmentKeys.mongoDb),
+        dbName: 'optisave',
         connectionFactory: (connection) => {
           connection.on('connected', () => {
             console.log('MongoDB is connected');
@@ -28,11 +34,7 @@ import { CommonModule } from './common/common.module';
         }
       }),
       inject: [ConfigService],
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true, // no need to import into other modules
-    }),
-
+    })
   ],
   controllers: [],
   providers: [],

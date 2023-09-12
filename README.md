@@ -1,28 +1,40 @@
+##Used Stack
+* [NestJs](https://docs.nestjs.com/)
+* [MongoDb](https://www.mongodb.com/docs/)
+* [Mongoose](https://docs.nestjs.com/techniques/mongodb)
+* [Handlebars](https://handlebarsjs.com/)
+* [MJML](https://mjml.io/)
+# Execute on local
 
-# Ejecutar en desarrollo
-
- 1. Clonar repositorio
- 2. Ejecutar
+ 1. Clone repository
+ 2. Execute
  ```
  yarn install
  ```
- 3. Tener CLI instalado
+ 3. Install NestJs CLI 
 ```
  npm i -g @nestjs/cli
 ```
-4. Levantar la base de datos
+4. Install docker and docker-compose
+
+5. Run database locally
 ```
  docker-compose up -d
 ```
 
-5. Populate data with seed command 
+6. Clone .env.template and rename as .env
+
+7. Fill .env variables with local values
+
+8. Populate data with seed command 
 ```
 yarn seed:dev
 ```
 
-##Stack usado
-* NestJs
-* MongoDb
+9. Run service locally
+```
+yarn start:dev
+```
 
 Errors founded in development
 1. If you get this error when run nest command using yarn as package manage remove the yarn.lock and execute yarn 

@@ -41,8 +41,7 @@ export class ScVision {
   visualAcuityWithoutCorrection: string;
 }
 
-// RX EN USO
-export class CurrentPrescription {
+export class Prescription {
   @Prop()
   eye: string;
   @Prop()
@@ -57,21 +56,11 @@ export class CurrentPrescription {
   visualAcuityWithCorrection?: string;
 }
 
+// RX EN USO
+export class CurrentPrescription extends Prescription { }
+
 // RX FINAL
-export class FinalPrescription {
-  @Prop()
-  eye: string;
-  @Prop()
-  sphericalPower: number; // should be a decimal
-  @Prop()
-  cylinderPower: number; // should be a decimal
-  @Prop()
-  axis: number; // should be an decimal
-  @Prop()
-  nearAdditionPower?: number; // should be a decimal
-  @Prop()
-  visualAcuityWithCorrection?: string;
-}
+export class FinalPrescription extends Prescription { }
 
 // DX
 export class Diagnosis {

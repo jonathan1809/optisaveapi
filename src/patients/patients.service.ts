@@ -4,6 +4,7 @@ import { Model, ObjectId } from 'mongoose';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Patient } from './entities/patient.entity';
+import { RestDto } from 'src/common/dto/rest.dto';
 
 @Injectable()
 export class PatientsService {
@@ -21,9 +22,15 @@ export class PatientsService {
     }
   }
 
-  async findAll() {
-    const patients = await this.patientModel.find()
-    return patients;
+  async findAll(query: RestDto) {
+    const [patients, patientsCount] = await Promise.all([
+      this.patientModel.find(query.restQuery)
+        .skip(query.skip)
+        .limit(query.limit)
+        .sort(query.sort),
+      this.patientModel.countDocuments(query.restQuery)
+    ])
+    return { patientsCount, patients }
   }
 
   async findOne(id: ObjectId) {

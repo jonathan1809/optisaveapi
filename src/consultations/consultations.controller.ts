@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
 import { ConsultationsService } from './consultations.service';
+import { RestDto } from 'src/common/dto/rest.dto';
 
 @Controller('consultations')
 export class ConsultationsController {
@@ -13,8 +14,9 @@ export class ConsultationsController {
   }
 
   @Get()
-  findAll() {
-    return this.consultationsService.findAll();
+  findAll(@Query() restDto: RestDto) {
+    console.log(restDto)
+    return this.consultationsService.findConsultations(restDto);
   }
 
   @Get(':id')

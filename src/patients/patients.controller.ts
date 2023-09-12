@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException, Query } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { MailParams } from '../common/mail/types/mail-adapter.type';
 import { ValidateMongoIdPipe } from '../common/pipes/validate-mongo-id/validate-mongo-id.pipe';
@@ -6,6 +6,7 @@ import { MailService } from '../common/mail/mail.service';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
+import { RestDto } from 'src/common/dto/rest.dto';
 
 @Controller('patients')
 export class PatientsController {
@@ -20,8 +21,8 @@ export class PatientsController {
   }
 
   @Get()
-  findAll() {
-    return this.patientsService.findAll();
+  findAll(@Query() queryParams: RestDto) {
+    return this.patientsService.findAll(queryParams);
   }
 
   @Get(':id')
@@ -41,15 +42,15 @@ export class PatientsController {
   }
 
   @Get('send/mail/:url')
-  async sendNotification(@Param('url') id: string) {
-    const patients = await this.patientsService.findAll()
+  async sendNotification(@Param('url') id: string, @Query() queryParams: RestDto) {
+    const { patientsCount, patients } = await this.patientsService.findAll(queryParams)
     const mailOptions: MailParams = {
       to: "jonathanmedina1809@hotmail.com",
       subject: "testing email",
       template: "test",
-      text: `"This is the text message" ${patients.length}`,
+      text: `"This is the text message" ${patientsCount}`,
       context: {
-        name: patients.length,
+        name: patientsCount,
         url: id
       }
     }

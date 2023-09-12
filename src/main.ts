@@ -1,17 +1,21 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
+import { RestPipe } from './common/pipes/rest/rest.pipe';
 
 async function main() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'debug', 'verbose', 'log'],
   });
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true
-  }))
+  app.useGlobalPipes(new RestPipe(),
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true
+    }),
+  )
 
   app.setGlobalPrefix('api')
-  await app.listen(3000);
+  app.enableCors();
+  await app.listen(process.env.APP_PORT);
 }
 main();
