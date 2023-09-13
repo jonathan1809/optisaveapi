@@ -16,9 +16,11 @@ RUN yarn build
 
 # Move out the built files into a app and add the package files
 RUN mkdir /app
+RUN mkdir /app/files
 RUN mv /project/dist /app/dist
 RUN mv /project/package.json /app/package.json
 RUN mv /project/yarn.lock /app/yarn.lock
+RUN mv /project/files/CONCENTRADO2019.xlsx /app/files/CONCENTRADO2019.xlsx
 RUN rm -r /project
 
 # Install only the production dependencies
@@ -33,4 +35,6 @@ WORKDIR /app
 
 # Run the server
 ENV NODE_ENV production
-CMD ["yarn", "start"]
+# ENV PORT 3000
+CMD yarn seed:dev; yarn start
+# EXPOSE 3000
