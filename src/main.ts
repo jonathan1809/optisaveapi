@@ -16,6 +16,8 @@ async function main() {
 
   app.setGlobalPrefix('api')
   app.enableCors();
-  await app.listen(process.env.APP_PORT);
+  console.log("Starting optisave")
+  await app.listen(process.env.PORT);
+  console.log(`Optisave running on port ${process.env.PORT}`)
 }
 main();
